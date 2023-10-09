@@ -3,7 +3,7 @@ import { RiSearchLine } from 'react-icons/ri';
 
 const SearchInput = () => {
   return (
-    <InputGroup variant="filled" size="lg">
+    <InputGroup variant="filled">
       <InputLeftElement pointerEvents="none">
         <RiSearchLine size={20} />
       </InputLeftElement>

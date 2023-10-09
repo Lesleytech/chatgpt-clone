@@ -1,12 +1,14 @@
 import { Image } from '@chakra-ui/react';
 import { FC } from 'react';
 
+import { ASSET_RESOURCES } from '~/utils/resources';
+
 interface IProps {
   size?: number;
 }
 
 const Logo: FC<IProps> = ({ size = 175 }) => {
-  return <Image src="/assets/images/logo.svg" objectFit="contain" w={`${size}px`} />;
+  return <Image src={ASSET_RESOURCES.logo} objectFit="contain" w={`${size}px`} />;
 };
 
 export { Logo };

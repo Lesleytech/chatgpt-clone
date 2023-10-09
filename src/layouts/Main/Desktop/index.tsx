@@ -1,6 +1,7 @@
 import { Box, Center, Flex, Image, Spinner } from '@chakra-ui/react';
 
-import { SideMenu } from '~/modules/Main/components';
+import { ChatList, Messages, SideMenu, UserInput } from '~/modules/Main/components';
+import { ASSET_RESOURCES } from '~/utils/resources';
 
 const DesktopLayout = () => {
   return (
@@ -9,12 +10,27 @@ const DesktopLayout = () => {
         <Box w="375px" px="3em">
           <SideMenu />
         </Box>
-        <Box flex="1" bg="gray.100" borderRadius="3xl">
-          <Spinner />
+        <Box
+          flex="1"
+          bg="#D9D9D933"
+          borderRadius="3xl"
+          display="grid"
+          gridTemplate="1fr auto / 1fr minmax(300px, 0.3fr)"
+          gridTemplateAreas="'msges chats''input chats'"
+          css={{ '> div': { paddingLeft: '2em', paddingRight: '2em', paddingBottom: '1.5em' } }}>
+          <Box gridArea="msges" pt="3em">
+            <Messages />
+          </Box>
+          <Box gridArea="input" borderTop="1px solid" pt="1.5em">
+            <UserInput />
+          </Box>
+          <Box gridArea="chats" borderLeft="1px solid" pt="3em">
+            <ChatList />
+          </Box>
         </Box>
       </Flex>
       <Center py="1em">
-        <Image src="/assets/images/asi-logo.svg" />
+        <Image src={ASSET_RESOURCES.asiLogo} />
       </Center>
     </Flex>
   );
