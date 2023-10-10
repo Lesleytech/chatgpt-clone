@@ -26,13 +26,10 @@ const Menu: FC<IProps> = ({ items, activeKey, onClick }) => {
               onClick?.(key);
               onItemClick?.();
             }}
-            py="0.875em"
+            _hover={{ fontWeight: 'bold' }}
+            py="1em"
             alignItems="center"
-            _hover={{ transform: 'scale(1.25)', left: '10%' }}
-            position="relative"
-            left={isActiveKey ? '10%' : 0}
-            transform={isActiveKey ? 'scale(1.25)' : 'scale(1)'}
-            transition="all 0.25s ease-in-out"
+            transition="all 0.1s ease"
             fontWeight={isActiveKey ? 'bold' : 'normal'}>
             <>
               <Center fontSize="1.3em">{icon}</Center>

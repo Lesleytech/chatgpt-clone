@@ -38,7 +38,6 @@ const SideMenu = () => {
         key: 'notifications',
         onClick: () => setActiveKey('notifications'),
       },
-      { type: 'divider' },
       {
         label: 'Settings',
         icon: <IoSettingsOutline />,
