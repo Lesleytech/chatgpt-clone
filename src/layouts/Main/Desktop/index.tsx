@@ -1,12 +1,16 @@
-import { Box, Center, Flex, Image, Spinner } from '@chakra-ui/react';
+import { Box, Center, Flex, Image } from '@chakra-ui/react';
+import PerfectScroll from 'react-perfect-scrollbar';
 
 import { ChatList, Messages, SideMenu, UserInput } from '~/modules/Main/components';
+import { useChat } from '~/utils/hooks/useChat';
 import { ASSET_RESOURCES } from '~/utils/resources';
 
 const DesktopLayout = () => {
+  const { activeRoomId } = useChat();
+
   return (
     <Flex flexDir="column" h="100vh" w="100vw" pt="3em" pr="3em">
-      <Flex flex="1">
+      <Flex flex="1" overflowY="hidden">
         <Box w="375px" px="3em">
           <SideMenu />
         </Box>
@@ -18,12 +22,18 @@ const DesktopLayout = () => {
           gridTemplate="1fr auto / 1fr minmax(300px, 0.3fr)"
           gridTemplateAreas="'msges chats''input chats'"
           css={{ '> div': { paddingLeft: '2em', paddingRight: '2em', paddingBottom: '1.5em' } }}>
-          <Box gridArea="msges" pt="3em">
-            <Messages />
-          </Box>
-          <Box gridArea="input" borderTop="1px solid" pt="1.5em">
-            <UserInput />
-          </Box>
+          {activeRoomId && (
+            <>
+              <Box gridArea="msges" py="3em" overflowY="hidden" px="0 !important">
+                <Box as={PerfectScroll} px="2em">
+                  <Messages />
+                </Box>
+              </Box>
+              <Box gridArea="input" borderTop="1px solid" pt="1.5em">
+                <UserInput />
+              </Box>
+            </>
+          )}
           <Box gridArea="chats" borderLeft="1px solid" pt="3em">
             <ChatList />
           </Box>

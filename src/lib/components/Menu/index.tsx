@@ -12,8 +12,8 @@ interface IProps {
 const Menu: FC<IProps> = ({ items, activeKey, onClick }) => {
   return (
     <Flex flexDir="column">
-      {items.map(({ icon, type, label, key, onClick: onItemClick }) => {
-        if (type === 'divider') return <Divider my="0.5em" />;
+      {items.map(({ icon, type, label, key, onClick: onItemClick }, idx) => {
+        if (type === 'divider') return <Divider my="0.5em" key={idx} />;
 
         const isActiveKey = key === activeKey;
 

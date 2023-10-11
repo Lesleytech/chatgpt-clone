@@ -1,5 +1,7 @@
-import { Box, Flex, Image, Text } from '@chakra-ui/react';
+import { Box, Center, Flex, Text } from '@chakra-ui/react';
 import { FC } from 'react';
+import { RiUserLine } from 'react-icons/ri';
+import { ReactSVG } from 'react-svg';
 
 import { ASSET_RESOURCES } from '~/utils/resources';
 
@@ -17,9 +19,11 @@ const MessageItem: FC<IProps> = ({ title, content }) => {
       border="1px solid"
       borderRadius="xl"
       boxShadow="lg">
-      <Image src={ASSET_RESOURCES.asiIcon} my="0.5em" mr="1.5em" />
+      <Center my="0.5em" mr="1.5em">
+        {title === 'user' ? <RiUserLine size={24} /> : <ReactSVG src={ASSET_RESOURCES.asiIcon} />}
+      </Center>
       <Box>
-        <Text fontWeight="600" mb="0.5em">
+        <Text fontWeight="600" mb="0.5em" textTransform="capitalize">
           {title}
         </Text>
         <Text mb="0.65em">{content}</Text>
