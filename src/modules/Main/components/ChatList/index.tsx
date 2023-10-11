@@ -1,6 +1,10 @@
 import { Button, Flex, Text, VStack } from '@chakra-ui/react';
+import { useCallback, useEffect } from 'react';
 import { RiAddFill } from 'react-icons/ri';
+import { useDispatch } from 'react-redux';
 
+import { idbService } from '~/services/idb.service';
+import { chatActions } from '~/store/chat';
 import { formatUnixTime } from '~/utils/format';
 import { useChat } from '~/utils/hooks/useChat';
 
@@ -9,6 +13,20 @@ import ChatListItem from './ChatListItem';
 const ChatList = () => {
   const { chatRooms, activeRoomId, onAddRoom, onRemoveRoom, onActiveRoomChange, onClearRooms } =
     useChat();
+
+  const dispatch = useDispatch();
+
+  const getInitialRooms = useCallback(async () => {
+    const rooms = await idbService.getRooms();
+
+    if (rooms) {
+      dispatch(chatActions.setInitialRooms(rooms));
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    getInitialRooms();
+  }, []);
 
   return (
     <Flex h="100%" flexDir="column">

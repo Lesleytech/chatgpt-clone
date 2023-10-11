@@ -4,13 +4,17 @@ import { HiOutlineLogout } from 'react-icons/hi';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { MdOutlineLiveHelp } from 'react-icons/md';
 import { RiDeleteBin7Line, RiNotificationLine, RiUserLine } from 'react-icons/ri';
+import { useDispatch } from 'react-redux';
 
 import { Logo, SearchInput } from '~/lib/components';
 import { IMenuItem } from '~/lib/components/interfaces/menu.interface';
 import Menu from '~/lib/components/Menu';
+import { useChat } from '~/utils/hooks/useChat';
 
 const SideMenu = () => {
   const [activeKey, setActiveKey] = useState<string | undefined>('guideAndFaq');
+
+  const { onClearRooms } = useChat();
 
   const menuItems: IMenuItem[] = useMemo(
     () => [
@@ -24,6 +28,7 @@ const SideMenu = () => {
         label: 'Clear Conversations',
         icon: <RiDeleteBin7Line />,
         key: 'clearConversations',
+        onClick: onClearRooms,
       },
       { type: 'divider' },
       {
@@ -51,7 +56,7 @@ const SideMenu = () => {
         key: 'logout',
       },
     ],
-    [],
+    [onClearRooms],
   );
 
   return (

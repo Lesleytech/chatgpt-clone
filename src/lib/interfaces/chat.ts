@@ -7,3 +7,7 @@ export interface IChatRoom extends IBaseEntity {
 }
 
 export interface IChatMessage extends IBaseEntity, ChatMessage {}
+
+export interface IChatRoomInStore extends IChatRoom {
+  messages: IChatMessage[];
+}
