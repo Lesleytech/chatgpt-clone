@@ -21,7 +21,7 @@ const Drawer: FC<IProps> = ({ onClose, isOpen, children, title, size }) => {
     <ChakraDrawer placement="left" onClose={onClose} isOpen={isOpen} size={size}>
       <DrawerOverlay />
       <DrawerContent>
-        <ModalCloseButton />
+        <ModalCloseButton size="lg" />
         {title && <ModalHeader>{title}</ModalHeader>}
 
         <DrawerBody>{children}</DrawerBody>

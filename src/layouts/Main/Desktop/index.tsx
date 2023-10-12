@@ -1,5 +1,4 @@
 import { Box, Center, Flex, Image } from '@chakra-ui/react';
-import PerfectScroll from 'react-perfect-scrollbar';
 
 import { ChatList, Messages, SideMenu, UserInput } from '~/modules/Main/components';
 import { useChat } from '~/utils/hooks/useChat';
@@ -24,8 +23,8 @@ const DesktopLayout = () => {
           css={{ '> div': { paddingLeft: '2em', paddingRight: '2em', paddingBottom: '1.5em' } }}>
           {activeRoomId && (
             <>
-              <Box gridArea="msges" py="3em" overflowY="hidden" px="0 !important">
-                <Box as={PerfectScroll} px="2em">
+              <Box gridArea="msges" py="3em" overflowY="auto" px="0 !important">
+                <Box overflowY="auto" px="2em">
                   <Messages />
                 </Box>
               </Box>

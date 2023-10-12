@@ -17,6 +17,7 @@ const MessageItem: FC<IProps> = ({ title, content }) => {
 
   return (
     <Flex
+      className="message-item"
       alignItems="flex-start"
       p={{ base: '0.5em 0.875em', lg: '1em 1.5em' }}
       bg="white"

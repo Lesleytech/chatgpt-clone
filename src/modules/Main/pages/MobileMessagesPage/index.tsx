@@ -41,7 +41,7 @@ const MobileMessagesPage = () => {
           {activeRoom.name || 'New chat'}
         </Text>
       </Flex>
-      <Box px="1em" overflowY="auto" shadow="sm">
+      <Box px="1em" overflowY="auto" shadow="sm" position="relative">
         <Box py="1em" h="100%">
           <Messages />
         </Box>

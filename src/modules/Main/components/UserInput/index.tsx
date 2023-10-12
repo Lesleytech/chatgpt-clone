@@ -10,14 +10,14 @@ const UserInput = () => {
   const [inputValue, setInputValue] = useState('');
   const dispatch = useDispatch();
 
-  const { onSend, messages, activeRoomId } = useChat();
+  const { onSend, messages, activeRoomId, onRegenerate } = useChat();
 
-  const canDeleteLastGeneration =
-    !!messages.length && messages[messages.length - 1].role !== 'user';
+  const canRegenerate = !!messages.length && messages[messages.length - 1].role !== 'user';
 
   return (
     <Box
       as="form"
+      position="relative"
       onSubmit={(e: FormEvent) => {
         e.preventDefault();
 
@@ -31,7 +31,7 @@ const UserInput = () => {
           fontWeight="normal"
           colorScheme="black"
           onClick={() => {
-            if (canDeleteLastGeneration) dispatch(chatActions.deleteLastMessage(activeRoomId));
+            if (canRegenerate) dispatch(chatActions.deleteLastMessage(activeRoomId));
           }}
           leftIcon={<RiDeleteBin7Line color="red" />}>
           Delete last Generation
@@ -46,6 +46,22 @@ const UserInput = () => {
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
       />
+      {canRegenerate && (
+        <Button
+          bg="#282C34"
+          color="#989898"
+          pos="absolute"
+          colorScheme="none"
+          size="sm"
+          fontWeight="normal"
+          top="-60px"
+          left="50%"
+          zIndex="2"
+          onClick={onRegenerate}
+          transform="translateX(-50%)">
+          Generate Content
+        </Button>
+      )}
     </Box>
   );
 };
