@@ -29,6 +29,9 @@ const variants: Record<string, any> = {
       _focus: {
         borderColor: 'black',
       },
+      _disabled: {
+        opacity: 0.75,
+      },
     },
   },
 };

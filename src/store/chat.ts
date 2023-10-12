@@ -66,6 +66,15 @@ const slice = createSlice({
         idbService.updateRoom(roomId, { name: chatRoom.name, messages: chatRoom.messages });
       }
     },
+    deleteLastMessage: (chat, { payload: roomId }: PayloadAction<string>) => {
+      const chatRoom = chat.rooms[roomId];
+
+      if (chatRoom) {
+        chatRoom.messages = chatRoom.messages.slice(0, chatRoom.messages.length - 1);
+
+        idbService.updateRoom(roomId, { name: chatRoom.name, messages: chatRoom.messages });
+      }
+    },
   },
 });
 

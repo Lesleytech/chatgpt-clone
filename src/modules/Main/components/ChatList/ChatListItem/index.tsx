@@ -18,12 +18,12 @@ const ChatListItem: FC<IProps> = ({ title, date, onDelete, onClick, isActive }) 
       gap="1em"
       cursor="pointer"
       css={{ ':hover': { '.title': { fontWeight: 'bold' } } }}>
-      <Box alignSelf="flex-start">
-        <RiArrowDownSLine size={26} />
+      <Box alignSelf="flex-start" fontSize={{ base: '20px', lg: '26px' }}>
+        <RiArrowDownSLine />
       </Box>
       <Box flex="1">
         <Text
-          fontSize="lg"
+          fontSize={{ base: 'md', lg: 'lg' }}
           noOfLines={1}
           className="title"
           fontWeight={isActive ? 'bold' : '500'}
@@ -43,6 +43,7 @@ const ChatListItem: FC<IProps> = ({ title, date, onDelete, onClick, isActive }) 
         icon={<RiDeleteBin7Line size="1.3em" />}
         colorScheme="none"
         color="inherit"
+        h="unset"
       />
     </Flex>
   );

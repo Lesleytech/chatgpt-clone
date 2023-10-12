@@ -1,17 +1,20 @@
 import { Box, Center } from '@chakra-ui/react';
-import { useMemo, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 import { HiOutlineLogout } from 'react-icons/hi';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { MdOutlineLiveHelp } from 'react-icons/md';
 import { RiDeleteBin7Line, RiNotificationLine, RiUserLine } from 'react-icons/ri';
-import { useDispatch } from 'react-redux';
 
 import { Logo, SearchInput } from '~/lib/components';
 import { IMenuItem } from '~/lib/components/interfaces/menu.interface';
 import Menu from '~/lib/components/Menu';
 import { useChat } from '~/utils/hooks/useChat';
 
-const SideMenu = () => {
+interface IProps {
+  onMenuClick?: (key?: string) => void;
+}
+
+const SideMenu: FC<IProps> = ({ onMenuClick }) => {
   const [activeKey, setActiveKey] = useState<string | undefined>('guideAndFaq');
 
   const { onClearRooms } = useChat();
@@ -66,7 +69,7 @@ const SideMenu = () => {
       </Center>
       <SearchInput />
       <Box mt="4em">
-        <Menu items={menuItems} activeKey={activeKey} />
+        <Menu items={menuItems} activeKey={activeKey} onClick={onMenuClick} />
       </Box>
     </Box>
   );

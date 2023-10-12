@@ -40,7 +40,7 @@ const DesktopLayout = () => {
         </Box>
       </Flex>
       <Center py="1em">
-        <Image src={ASSET_RESOURCES.asiLogo} />
+        <Image src={ASSET_RESOURCES.asiLogo} alt="ASI logo" />
       </Center>
     </Flex>
   );

@@ -8,7 +8,7 @@ interface IProps {
 }
 
 const Logo: FC<IProps> = ({ size = 175 }) => {
-  return <Image src={ASSET_RESOURCES.logo} objectFit="contain" w={`${size}px`} />;
+  return <Image src={ASSET_RESOURCES.logo} objectFit="contain" w={`${size}px`} alt="Logo" />;
 };
 
 export { Logo };

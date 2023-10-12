@@ -12,6 +12,9 @@ const variants: Record<string, any> = {
       },
       _focus: {
         borderColor: 'black',
+        shadow: 'none',
+        boxShadow: 'none',
+        outline: 'none',
       },
     },
   },

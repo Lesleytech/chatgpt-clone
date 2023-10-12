@@ -8,7 +8,7 @@ import { generateBaseFields } from '~/utils/api';
 import { useAppSelector } from '~/utils/hooks/useAppSelector';
 
 export function useChat() {
-  const { activeRoomId } = useAppSelector((state) => state.chat);
+  const { activeRoomId, rooms } = useAppSelector((state) => state.chat);
   const chatRooms = useSelector(ChatRoomsSelector);
   const messages = useSelector(ChatMessagesSelector);
 
@@ -28,7 +28,8 @@ export function useChat() {
 
       const newMessages = [...messages, userMessage];
 
-      const res = await syncMessages(newMessages).catch((e) => console.error(e));
+      // eslint-disable-next-line no-console
+      const res = await syncMessages(newMessages);
 
       const assistantMessage: IChatMessage = {
         ...generateBaseFields(),
@@ -41,6 +42,22 @@ export function useChat() {
     [activeRoomId, dispatch, messages],
   );
 
+  const onRegenerate = useCallback(async () => {
+    const newMessages = messages.slice(0, messages.length - 1);
+
+    dispatch(chatActions.deleteLastMessage(activeRoomId));
+    // eslint-disable-next-line no-console
+    const res = await syncMessages(newMessages);
+
+    const assistantMessage: IChatMessage = {
+      ...generateBaseFields(),
+      role: 'assistant',
+      content: res || '',
+    };
+
+    dispatch(chatActions.addMessage({ message: assistantMessage, roomId: activeRoomId }));
+  }, [activeRoomId, dispatch, messages]);
+
   return useMemo(
     () => ({
       onAddRoom: () => dispatch(chatActions.addRoom()),
@@ -48,10 +65,12 @@ export function useChat() {
       onActiveRoomChange: (id: string) => dispatch(chatActions.setActiveRoom(id)),
       onClearRooms: () => dispatch(chatActions.clearRooms()),
       activeRoomId,
+      activeRoom: rooms[activeRoomId],
       chatRooms,
       messages,
       onSend,
+      onRegenerate,
     }),
-    [activeRoomId, chatRooms, dispatch, messages, onSend],
+    [activeRoomId, chatRooms, dispatch, messages, onRegenerate, onSend, rooms],
   );
 }

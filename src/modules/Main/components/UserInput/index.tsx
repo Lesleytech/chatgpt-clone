@@ -1,13 +1,19 @@
 import { Box, Button, Flex, Input } from '@chakra-ui/react';
 import { FormEvent, useState } from 'react';
 import { RiDeleteBin7Line } from 'react-icons/ri';
+import { useDispatch } from 'react-redux';
 
+import { chatActions } from '~/store/chat';
 import { useChat } from '~/utils/hooks/useChat';
 
 const UserInput = () => {
   const [inputValue, setInputValue] = useState('');
+  const dispatch = useDispatch();
 
-  const { onSend } = useChat();
+  const { onSend, messages, activeRoomId } = useChat();
+
+  const canDeleteLastGeneration =
+    !!messages.length && messages[messages.length - 1].role !== 'user';
 
   return (
     <Box
@@ -24,6 +30,9 @@ const UserInput = () => {
           variant="outline"
           fontWeight="normal"
           colorScheme="black"
+          onClick={() => {
+            if (canDeleteLastGeneration) dispatch(chatActions.deleteLastMessage(activeRoomId));
+          }}
           leftIcon={<RiDeleteBin7Line color="red" />}>
           Delete last Generation
         </Button>
