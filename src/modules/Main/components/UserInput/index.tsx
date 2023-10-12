@@ -10,7 +10,7 @@ const UserInput = () => {
   const [inputValue, setInputValue] = useState('');
   const dispatch = useDispatch();
 
-  const { onSend, messages, activeRoomId, onRegenerate } = useChat();
+  const { onStream, messages, activeRoomId, onRegenerate } = useChat();
 
   const canRegenerate = !!messages.length && messages[messages.length - 1].role !== 'user';
 
@@ -21,7 +21,7 @@ const UserInput = () => {
       onSubmit={(e: FormEvent) => {
         e.preventDefault();
 
-        onSend(inputValue);
+        onStream(inputValue);
         setInputValue('');
       }}>
       <Flex gap="0.5em" mb="0.65em">
@@ -30,6 +30,7 @@ const UserInput = () => {
           variant="outline"
           fontWeight="normal"
           colorScheme="black"
+          isDisabled={!canRegenerate}
           onClick={() => {
             if (canRegenerate) dispatch(chatActions.deleteLastMessage(activeRoomId));
           }}

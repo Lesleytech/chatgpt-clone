@@ -63,7 +63,9 @@ const slice = createSlice({
           chatRoom.name = message.content || '';
         }
 
-        idbService.updateRoom(roomId, { name: chatRoom.name, messages: chatRoom.messages });
+        if (!message.generating && !message.error) {
+          idbService.updateRoom(roomId, { name: chatRoom.name, messages: chatRoom.messages });
+        }
       }
     },
     deleteLastMessage: (chat, { payload: roomId }: PayloadAction<string>) => {
@@ -73,6 +75,27 @@ const slice = createSlice({
         chatRoom.messages = chatRoom.messages.slice(0, chatRoom.messages.length - 1);
 
         idbService.updateRoom(roomId, { name: chatRoom.name, messages: chatRoom.messages });
+      }
+    },
+    streamTokens: (
+      chat,
+      {
+        payload: { tokens, roomId, msgId, done },
+      }: PayloadAction<{ roomId: string; tokens: string; msgId: string; done?: boolean }>,
+    ) => {
+      const msg = chat.rooms[roomId]?.messages.find((m) => m.id === msgId);
+
+      if (!msg || msg.role === 'user') return;
+
+      if (done) {
+        msg.generating = false;
+
+        // Convert proxy array to array and save to idb
+        idbService.updateRoom(roomId, {
+          messages: JSON.parse(JSON.stringify(chat.rooms[roomId].messages)),
+        });
+      } else {
+        msg.content += tokens;
       }
     },
   },

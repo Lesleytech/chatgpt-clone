@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { IChatMessage } from '~/lib/interfaces/chat';
-import { syncMessages } from '~/services/api/chat';
+import { socketService } from '~/services/socket.service';
 import { chatActions, ChatMessagesSelector, ChatRoomsSelector } from '~/store/chat';
 import { generateBaseFields } from '~/utils/api';
 import { useAppSelector } from '~/utils/hooks/useAppSelector';
@@ -14,7 +14,40 @@ export function useChat() {
 
   const dispatch = useDispatch();
 
-  const onSend = useCallback(
+  const handleMsgStream = useCallback(
+    (newMessages: IChatMessage[]) => {
+      if (socketService.socket.connected) {
+        const baseFields = generateBaseFields();
+
+        const assistantMessage: IChatMessage = {
+          ...baseFields,
+          role: 'assistant',
+          content: '',
+          generating: true,
+        };
+
+        dispatch(chatActions.addMessage({ message: assistantMessage, roomId: activeRoomId }));
+
+        socketService.socket.emit('stream', {
+          messages: newMessages.filter((m) => !m.error && !m.generating),
+          roomId: activeRoomId,
+          msgId: baseFields.id,
+        });
+      } else {
+        const assistantMessage: IChatMessage = {
+          ...generateBaseFields(),
+          role: 'assistant',
+          content: 'Error generating response',
+          error: true,
+        };
+
+        dispatch(chatActions.addMessage({ message: assistantMessage, roomId: activeRoomId }));
+      }
+    },
+    [activeRoomId, dispatch],
+  );
+
+  const onStream = useCallback(
     async (userInput: string) => {
       if (!userInput.trim().length) return;
 
@@ -28,37 +61,18 @@ export function useChat() {
 
       const newMessages = [...messages, userMessage];
 
-      // eslint-disable-next-line no-console
-      const { content, error } = await syncMessages(newMessages);
-
-      const assistantMessage: IChatMessage = {
-        ...generateBaseFields(),
-        role: 'assistant',
-        content,
-        error,
-      };
-
-      dispatch(chatActions.addMessage({ message: assistantMessage, roomId: activeRoomId }));
+      handleMsgStream(newMessages);
     },
-    [activeRoomId, dispatch, messages],
+    [activeRoomId, dispatch, handleMsgStream, messages],
   );
 
   const onRegenerate = useCallback(async () => {
     const newMessages = messages.slice(0, messages.length - 1);
 
     dispatch(chatActions.deleteLastMessage(activeRoomId));
-    // eslint-disable-next-line no-console
-    const { content, error } = await syncMessages(newMessages);
 
-    const assistantMessage: IChatMessage = {
-      ...generateBaseFields(),
-      role: 'assistant',
-      content,
-      error,
-    };
-
-    dispatch(chatActions.addMessage({ message: assistantMessage, roomId: activeRoomId }));
-  }, [activeRoomId, dispatch, messages]);
+    handleMsgStream(newMessages);
+  }, [activeRoomId, dispatch, handleMsgStream, messages]);
 
   return useMemo(
     () => ({
@@ -70,9 +84,9 @@ export function useChat() {
       activeRoom: rooms[activeRoomId],
       chatRooms,
       messages,
-      onSend,
       onRegenerate,
+      onStream,
     }),
-    [activeRoomId, chatRooms, dispatch, messages, onRegenerate, onSend, rooms],
+    [activeRoomId, chatRooms, dispatch, messages, onRegenerate, rooms, onStream],
   );
 }

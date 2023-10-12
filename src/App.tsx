@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { idbService } from '~/services/idb.service';
+import { socketService } from '~/services/socket.service';
 import { chatActions } from '~/store/chat';
 import { mediaQueries } from '~/theme/breakpoints';
 import { useMediaQuery } from '~/utils/hooks/useMediaQuery';
@@ -29,6 +30,14 @@ const App = () => {
 
   useEffect(() => {
     getInitialRooms();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    socketService.socket.on('message-token', (d) => {
+      dispatch(chatActions.streamTokens(d));
+    });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

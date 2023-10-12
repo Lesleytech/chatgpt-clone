@@ -8,6 +8,7 @@ export interface IChatRoom extends IBaseEntity {
 
 export interface IChatMessage extends IBaseEntity, ChatMessage {
   error?: boolean;
+  generating?: boolean;
 }
 
 export interface IChatRoomInStore extends IChatRoom {

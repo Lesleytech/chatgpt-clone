@@ -38,7 +38,7 @@ const ChatList = () => {
           <Text color="textSecondary">No chat yet</Text>
         )}
       </VStack>
-      <Button colorScheme="red" onClick={onClearRooms}>
+      <Button colorScheme="red" onClick={onClearRooms} isDisabled={!chatRooms.length}>
         Clear All
       </Button>
     </Flex>

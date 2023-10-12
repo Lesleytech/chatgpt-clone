@@ -25,7 +25,7 @@ const Messages = () => {
       <Box h="100%">
         <VStack spacing="1.25em" alignItems="unset" className="messages-stack" pb="5em">
           {messages.map((msg, i) => (
-            <MessageItem title={msg.role} content={msg.content || ''} key={i} />
+            <MessageItem data={msg} key={i} />
           ))}
         </VStack>
       </Box>
