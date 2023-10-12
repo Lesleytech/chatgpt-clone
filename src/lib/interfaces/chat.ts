@@ -6,7 +6,9 @@ export interface IChatRoom extends IBaseEntity {
   name: string;
 }
 
-export interface IChatMessage extends IBaseEntity, ChatMessage {}
+export interface IChatMessage extends IBaseEntity, ChatMessage {
+  error?: boolean;
+}
 
 export interface IChatRoomInStore extends IChatRoom {
   messages: IChatMessage[];

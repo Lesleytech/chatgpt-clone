@@ -57,7 +57,7 @@ const slice = createSlice({
       const chatRoom = chat.rooms[roomId];
 
       if (chatRoom) {
-        chatRoom.messages = [...chatRoom.messages, message];
+        chatRoom.messages = [...chatRoom.messages.filter((m) => !m.error), message];
 
         if (!chatRoom.name) {
           chatRoom.name = message.content || '';

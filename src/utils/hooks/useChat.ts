@@ -29,12 +29,13 @@ export function useChat() {
       const newMessages = [...messages, userMessage];
 
       // eslint-disable-next-line no-console
-      const res = await syncMessages(newMessages);
+      const { content, error } = await syncMessages(newMessages);
 
       const assistantMessage: IChatMessage = {
         ...generateBaseFields(),
         role: 'assistant',
-        content: res || '',
+        content,
+        error,
       };
 
       dispatch(chatActions.addMessage({ message: assistantMessage, roomId: activeRoomId }));
@@ -47,12 +48,13 @@ export function useChat() {
 
     dispatch(chatActions.deleteLastMessage(activeRoomId));
     // eslint-disable-next-line no-console
-    const res = await syncMessages(newMessages);
+    const { content, error } = await syncMessages(newMessages);
 
     const assistantMessage: IChatMessage = {
       ...generateBaseFields(),
       role: 'assistant',
-      content: res || '',
+      content,
+      error,
     };
 
     dispatch(chatActions.addMessage({ message: assistantMessage, roomId: activeRoomId }));
